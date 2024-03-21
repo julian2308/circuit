@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: 'circuit'
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      myServiceCircuitBreaker:
+        baseConfig: default
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        ringBufferSizeInHalfOpenState: 10
+        ringBufferSizeInClosedState: 100
+        slidingWindowSize: 2  # Tamaño de la ventana deslizante para contabilizar los fallos
+        permittedNumberOfCallsInHalfOpenState: 1  # Número máximo de llamadas permitidas en estado medio abierto
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
